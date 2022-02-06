@@ -3,7 +3,11 @@ package com.sg.inventory.controller;
 import com.sg.inventory.entities.Product;
 import com.sg.inventory.entities.Store;
 import com.sg.inventory.entities.Supplier;
+import com.sg.inventory.repositories.ProductRepository;
+import com.sg.inventory.repositories.StoreRepository;
+import com.sg.inventory.repositories.SupplierRepository;
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,15 +20,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class MainController {
     
+    @Autowired
+    ProductRepository products;
+    
+    @Autowired
+    StoreRepository stores;
+    
+    @Autowired
+    SupplierRepository suppliers;
+    
     @GetMapping("/")
     public String index(Model model) {
-//        model.addAttribute("stores", null);
+        model.addAttribute("stores", stores.findAll());
         return "index";
     }
     
     @PostMapping("/addStore")
     public String addStore(Store store) {
-
+        stores.save(store);
         return "redirect:/";
     }
     
